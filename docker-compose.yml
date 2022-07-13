@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  nginx:
+    container_name: katas_nginx
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - .:/app:cached
+    networks:
+      - katas
+    depends_on:
+      - php
+
+  php:
+    container_name: katas_php
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "9001:9001"
+    volumes:
+      - ./docker/php/init:/docker-entrypoint
+      - .:/app:cached
+    networks:
+      - katas
+    environment:
+      - DOCKER_PHP_CONTAINER_NAME
+
+networks:
+  katas:
+    driver: "bridge"

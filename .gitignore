@@ -1,0 +1,12 @@
+/node_modules
+/public/hot
+/public/storage
+/public/js
+/public/css
+/storage/*.key
+/vendor
+!.env.example
+.env
+.env.*
+.vscode
+.idea
